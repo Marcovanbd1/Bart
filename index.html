@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Every clinical encounter has an emotional climate · Mark Winterburn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f4f0e8;
+    --cream: #ece8df;
+    --warm-mid: #7a7168;
+    --rule: rgba(26,22,18,0.1);
+    --blue: #1a3ab8;
+    --blue-pale: #e8edfb;
+    --terracotta: #a8401e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-left {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    font-weight: 400;
+  }
+
+  .header-right {
+    font-size: 0.7rem;
+    color: var(--warm-mid);
+  }
+
+  .header-right a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* OPENING */
+  .opening {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 8rem 3rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .opening-to {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-bottom: 3.5rem;
+    font-weight: 400;
+  }
+
+  .opening-statement {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .opening-statement em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .opening-period {
+    color: var(--terracotta);
+  }
+
+  .opening-body {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--rule);
+    max-width: 560px;
+  }
+
+  .opening-body p {
+    font-size: 1.02rem;
+    color: #4a4540;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .opening-body p:last-child { margin-bottom: 0; }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .divider-rule {
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* SECTION */
+  .section {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--rule);
+  }
+
+  .section-marker {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 1.8rem;
+    max-width: 580px;
+    letter-spacing: -0.01em;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .body {
+    font-size: 0.97rem;
+    color: #4a4540;
+    line-height: 1.9;
+    max-width: 560px;
+    margin-bottom: 1.3rem;
+  }
+
+  .body:last-child { margin-bottom: 0; }
+
+  /* PULL */
+  .pull {
+    margin: 3rem 0;
+    padding: 2rem 0 2rem 2rem;
+    border-left: 1px solid var(--terracotta);
+  }
+
+  .pull-text {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.55;
+    max-width: 500px;
+  }
+
+  /* DIMENSIONS */
+  .dimensions {
+    margin: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .dimension {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  .dimension:last-child { border-bottom: none; }
+
+  @media (max-width: 580px) {
+    .dimension { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+
+  .dimension-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink);
+    padding-top: 0.1rem;
+  }
+
+  .dimension-desc {
+    font-size: 0.88rem;
+    color: #4a4540;
+    line-height: 1.8;
+  }
+
+  /* TEAM */
+  .team {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 2.5rem 0;
+  }
+
+  .team-member {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  .team-member:last-child { border-bottom: none; }
+
+  @media (max-width: 580px) {
+    .team-member { grid-template-columns: 1fr; gap: 0.8rem; }
+  }
+
+  .team-left {}
+
+  .team-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  .team-role {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    line-height: 1.5;
+  }
+
+  .team-question {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--terracotta);
+    margin-top: 0.6rem;
+    line-height: 1.5;
+  }
+
+  .team-body {
+    font-size: 0.9rem;
+    color: #4a4540;
+    line-height: 1.85;
+  }
+
+  /* DARK INTERLUDE */
+  .interlude {
+    background: var(--ink);
+    padding: 5rem 3rem;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .interlude::before {
+    content: 'EA';
+    position: absolute;
+    right: -0.05em;
+    bottom: -0.2em;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 18rem;
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(244,240,232,0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .interlude-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .interlude .section-marker {
+    color: rgba(244,240,232,0.35);
+  }
+
+  .interlude h2 {
+    color: var(--paper);
+  }
+
+  .interlude h2 em {
+    color: rgba(244,240,232,0.45);
+  }
+
+  .interlude .body {
+    color: rgba(244,240,232,0.6);
+  }
+
+  .interlude .pull {
+    border-left-color: rgba(244,240,232,0.2);
+  }
+
+  .interlude .pull-text {
+    color: var(--paper);
+  }
+
+  /* PROPOSAL */
+  .proposal {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    padding: 3rem;
+    margin: 3rem 0;
+  }
+
+  .proposal-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .proposal-heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    max-width: 480px;
+  }
+
+  .proposal-heading em { font-style: italic; }
+
+  .proposal-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .proposal-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .proposal-item-rule {
+    width: 20px;
+    height: 1px;
+    background: var(--terracotta);
+    margin-top: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .proposal-item-text {
+    font-size: 0.9rem;
+    color: #4a4540;
+    line-height: 1.8;
+  }
+
+  /* CLOSE */
+  .close {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 5rem 3rem 7rem;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--rule);
+  }
+
+  .close-heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 1.8rem;
+    max-width: 520px;
+  }
+
+  .close-heading em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .close-body {
+    font-size: 0.97rem;
+    color: #4a4540;
+    line-height: 1.9;
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  .sig {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .sig-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .sig-role {
+    font-size: 0.82rem;
+    color: var(--warm-mid);
+    line-height: 1.65;
+  }
+
+  .sig-link {
+    font-size: 0.82rem;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--blue-pale);
+    width: fit-content;
+    transition: border-color 0.18s;
+    margin-top: 0.2rem;
+  }
+
+  .sig-link:hover { border-color: var(--blue); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(244,240,232,0.3);
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.on {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* HERO ANIMATION */
+  .opening-statement {
+    opacity: 0;
+    animation: arrive 1.2s ease 0.3s forwards;
+  }
+
+  .opening-to {
+    opacity: 0;
+    animation: arrive 0.8s ease 0.1s forwards;
+  }
+
+  .opening-body {
+    opacity: 0;
+    animation: arrive 0.8s ease 0.7s forwards;
+  }
+
+  @keyframes arrive {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-left">For Bart Voorn · Ditto Care</span>
+  <span class="header-right">
+    April 2026 &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/mark-winterburn/" target="_blank">Mark Winterburn</a>
+  </span>
+</div>
+
+<!-- OPENING -->
+<div class="opening">
+  <div class="opening-to">A note from Mark Winterburn</div>
+
+  <h1 class="opening-statement">
+    Every clinical encounter<br>
+    has an <em>emotional climate</em><span class="opening-period">.</span>
+  </h1>
+
+  <div class="opening-body">
+    <p>
+      You founded Ditto on that observation, even if you didn't use those words. That the problem is deeper than memory. That people receive clinical information in a state where the cognitive architecture for processing it simply isn't available. That the information is given. The conditions for receiving it are absent.
+    </p>
+    <p>
+      I've been working on the same problem from inside the NHS. The methodology I've developed with Neighbourhood CoLab CIC maps the emotional climate of clinical encounters across five dimensions and uses that map to determine how post-consultation information should be structured, sequenced, and calibrated before it reaches the patient.
+    </p>
+    <p>
+      I think we've been building toward the same thing from opposite ends of the same room. This is an introduction to the people behind that methodology, and an informal proposal for what a partnership between CoLab and Ditto could look like.
+    </p>
+  </div>
+</div>
+
+<!-- THE PROBLEM BENEATH THE PROBLEM -->
+<section class="section reveal">
+  <div class="section-marker">The cognitive architecture of the consultation room</div>
+  <h2>The problem runs deeper than memory. It is <em>metacognition under emotional load.</em></h2>
+
+  <p class="body">
+    When a patient sits in front of a clinician who uses the word cancer, or dementia, or complicated, something happens to cognition that memory alone cannot explain. Metacognitive capacity collapses. The patient cannot monitor their own comprehension. They leave the room with fragments, and they have no way of knowing which fragments are missing. Health literacy and memory are downstream of it. The information was given. The capacity to receive it was temporarily unavailable.
+  </p>
+
+  <div class="pull">
+    <p class="pull-text">Accurate information that cannot be received in the moment it arrives is not the same as useful information.</p>
+  </div>
+
+  <p class="body">
+    Emotional Architecture asks what this specific patient, in this specific emotional state, with this specific relational context, can actually receive and use. That question sits before the summary is generated. It shapes every word.
+  </p>
+</section>
+
+<!-- EA DIMENSIONS -->
+<section class="section reveal">
+  <div class="section-marker">The methodology</div>
+  <h2>Five dimensions. Every clinical encounter. Every summary.</h2>
+
+  <p class="body">
+    Emotional Architecture maps the emotional climate of a clinical encounter across five dimensions. Each one is a clinical parameter that determines whether post-consultation information becomes action or remains noise.
+  </p>
+
+  <div class="dimensions">
+    <div class="dimension">
+      <div class="dimension-name">Tone Gradient</div>
+      <div class="dimension-desc">The emotional register of the consultation and how it should travel into the summary. A cancer diagnosis conversation and a routine medication review require fundamentally different tonal calibration, not just different content.</div>
+    </div>
+    <div class="dimension">
+      <div class="dimension-name">Disclosure Readiness</div>
+      <div class="dimension-desc">What the patient was ready to hear in the room, and what they are ready to receive when the summary arrives. The summary reaches the patient at a different point in their processing of what happened. The two moments require different calibration.</div>
+    </div>
+    <div class="dimension">
+      <div class="dimension-name">Omission Topology</div>
+      <div class="dimension-desc">What should be left out, and why. Every omission is a decision. Examination findings that would worry without purpose. Diagnoses the patient already carries. Information that belongs to the clinical record but not to the patient's next twenty-four hours.</div>
+    </div>
+    <div class="dimension">
+      <div class="dimension-name">Relational Load</div>
+      <div class="dimension-desc">Who else is carrying this information with the patient. A partner. A daughter. A carer. A social worker. The summary is never read by one person in isolation. Relational Load determines how the information should be structured for the people who will receive it together.</div>
+    </div>
+    <div class="dimension">
+      <div class="dimension-name">Temporal Pressure</div>
+      <div class="dimension-desc">What needs to happen, and by when. The patient travelling on Sunday. The medication that starts tonight. The decision that has to be made before Friday. Temporal Pressure determines the hierarchy of action in the summary.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK INTERLUDE -->
+<div class="interlude reveal">
+  <div class="interlude-inner">
+    <div class="section-marker">Where this lives in Ditto</div>
+    <h2>EA doesn't sit after the summary. <em>It sits before it.</em></h2>
+    <p class="body">
+      Emotional Architecture is not a quality check applied after the LLM has produced something. It is the framework that determines what the LLM is instructed to do before a word of the summary is generated. The five dimensions run as parameters at the configuration layer. The summary that comes out the other end is shaped by those parameters from the first word.
+    </p>
+    <p class="body">
+      Your medical team currently sets the rules for the summaries and red-teams the output. That is exactly the right instinct. What CoLab brings is the formal methodology that makes those rules clinically defensible, philosophically grounded, and consistently applied across every consultation type, every language, and every market Ditto enters.
+    </p>
+    <div class="pull">
+      <p class="pull-text">The Dutch medical team sets rules based on Dutch clinical norms. EA sets rules based on how human beings receive difficult information under emotional load. That doesn't change at a border.</p>
+    </div>
+  </div>
+</div>
+
+<!-- THE FOUR -->
+<section class="section reveal">
+  <div class="section-marker">Neighbourhood CoLab CIC</div>
+  <h2>Four people. One question each. <em>75 years of frontline experience.</em></h2>
+
+  <p class="body">
+    Neighbourhood CoLab CIC was formed by four people who have each spent their careers at the point where the NHS meets the person. Between them they hold a question that no single discipline can answer alone.
+  </p>
+
+  <div class="team">
+    <div class="team-member">
+      <div class="team-left">
+        <div class="team-name">Lucy Winterburn</div>
+        <div class="team-role">NHS Nurse<br>25 years</div>
+        <div class="team-question">"Is this defensible?"</div>
+      </div>
+      <div class="team-body">
+        Every decision about what goes into a post-consultation communication has to be clinically justifiable. Lucy holds the safety question. The output cannot overrule the clinician. It has to be accountable in its own right. Her 25 years of NHS nursing shapes every omission decision in the EA framework.
+      </div>
+    </div>
+
+    <div class="team-member">
+      <div class="team-left">
+        <div class="team-name">Dr Bruce Fernie</div>
+        <div class="team-role">Clinical Psychologist<br>25 years NHS</div>
+        <div class="team-question">"What can this person receive right now?"</div>
+      </div>
+      <div class="team-body">
+        Bruce holds the metacognitive question. His 25 years of NHS clinical psychology means he understands precisely what happens to information processing under the emotional conditions that clinical encounters produce. The rules for summaries at the three life stages Ditto has identified, birth, cancer, cognitive decline, run through his clinical knowledge directly.
+      </div>
+    </div>
+
+    <div class="team-member">
+      <div class="team-left">
+        <div class="team-name">Justin Jones</div>
+        <div class="team-role">Social Worker<br>25 years local authority</div>
+        <div class="team-question">"What happens after the NHS has done its bit?"</div>
+      </div>
+      <div class="team-body">
+        Justin holds the social and community layer. He knows what a patient's life actually looks like when they leave the room. Which family structures are real and which are aspirational. Which local assets exist and which are on a list somewhere. The Relational Load dimension of EA is built substantially from his understanding of how care travels through social networks.
+      </div>
+    </div>
+
+    <div class="team-member">
+      <div class="team-left">
+        <div class="team-name">Mark Winterburn</div>
+        <div class="team-role">Applied Philosopher<br>Digital & Transformation Lead, NHS</div>
+        <div class="team-question">"What does this person deserve from this moment?"</div>
+      </div>
+      <div class="team-body">
+        The philosophical question that sits beneath the clinical one. What is the right thing to do with this information? What is the ethics of omission? If accurate information cannot be received, is giving it better or worse than not giving it? These are not rhetorical questions. They are design parameters. The omission logic in EA is grounded in applied philosophy of mind as much as in clinical practice.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROPOSAL -->
+<section class="section reveal">
+  <div class="section-marker">An informal proposal</div>
+  <h2>What a partnership between CoLab and Ditto could look like.</h2>
+
+  <p class="body">
+    This is not a vendor relationship. CoLab is not offering to build something for Ditto. The proposal is a partnership between two organisations that are building toward the same insight from different directions. Ditto has the product, the scale, and the consumer reach. CoLab has the methodology, the clinical governance framework, and the frontline NHS expertise that makes the product defensible in every regulated healthcare system it enters.
+  </p>
+
+  <div class="proposal">
+    <div class="proposal-label">The shape of it</div>
+    <div class="proposal-heading">Neighbourhood CoLab CIC as <em>Ditto's global clinical methodology partner.</em></div>
+    <ul class="proposal-items">
+      <li class="proposal-item">
+        <div class="proposal-item-rule"></div>
+        <div class="proposal-item-text">EA is embedded at Ditto's summary configuration layer globally, not as a UK-specific add-on but as the foundational methodology that shapes every summary in every market.</div>
+      </li>
+      <li class="proposal-item">
+        <div class="proposal-item-rule"></div>
+        <div class="proposal-item-text">CoLab works alongside Ditto's medical team to configure EA for the three life stage anchors: birth, cancer, and cognitive decline. These are the consultations where the emotional climate matters most and where the clinical consequences of getting it wrong are most serious.</div>
+      </li>
+      <li class="proposal-item">
+        <div class="proposal-item-rule"></div>
+        <div class="proposal-item-text">As Ditto enters each new market, CoLab configures EA for the local clinical context, cultural norms around disclosure, and regulatory framework. The methodology is market-agnostic. Its application is market-specific.</div>
+      </li>
+      <li class="proposal-item">
+        <div class="proposal-item-rule"></div>
+        <div class="proposal-item-text">The partnership generates real-world evidence for EA at scale. Tens of thousands of EA-shaped summaries across multiple markets and consultation types. That evidence is jointly owned and jointly publishable. It is the clinical validation that makes both Ditto and CoLab more credible in every conversation that follows.</div>
+      </li>
+      <li class="proposal-item">
+        <div class="proposal-item-rule"></div>
+        <div class="proposal-item-text">The commercial structure is a CoLab CIC licence agreement: a modest monthly retainer reflecting CoLab's ongoing methodology work, with a royalty structure tied to summary volume at scale. The retainer acknowledges the work. The royalty acknowledges the value.</div>
+      </li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- CLOSE -->
+<div class="close reveal">
+  <h2 class="close-heading">
+    I think we've been working on <em>different ends of the same problem.</em>
+  </h2>
+  <p class="close-body">
+    The conversation with Oli was the beginning. This is the part that I think belongs to you. I'd welcome a call whenever feels right.
+  </p>
+
+  <div class="sig">
+    <div class="sig-name">Mark Winterburn</div>
+    <div class="sig-role">
+      Applied Philosopher &nbsp;·&nbsp; Opsimath<br>
+      Digital & Transformation Lead, Weymouth and Portland PCN<br>
+      Co-Director, Neighbourhood CoLab CIC<br>
+      Speaker, HETT 2026 · ExCeL London
+    </div>
+    <a href="mailto:mark.winterburn@dorsetgp.nhs.uk" class="sig-link">mark.winterburn@dorsetgp.nhs.uk</a>
+    <a href="https://www.linkedin.com/in/mark-winterburn/" target="_blank" class="sig-link">linkedin.com/in/mark-winterburn</a>
+  </div>
+</div>
+
+<footer>
+  Mark Winterburn · Neighbourhood CoLab CIC · April 2026
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  els.forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
